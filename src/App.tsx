@@ -1,8 +1,12 @@
-import React from 'react';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import { defaultTheme } from './commonStyles/theme';
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <div className="App">sdfsdf</div>;
+    </ThemeProvider>
+  );
 }
 
 export default App;
