@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const StyledChartBar = styled.div`
+export const StyledChart = styled.div`
+  width: 500px;
+  margin-bottom: 60px;
   padding: 20px 40px;
   border-radius: 10px;
   color: #fff;
@@ -14,6 +16,7 @@ export const StyledTitle = styled.h2`
 `;
 
 export const StyledTotalSum = styled.div`
+  margin-bottom: 20px;
   font-weight: 600;
   font-size: 24px;
 `;
