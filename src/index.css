@@ -22,14 +22,22 @@
     url('assets/fonts/Montserrat/Montserrat-SemiBold.woff') format('woff');
 }
 
-button {
+* {
+  box-sizing: border-box;
+}
+
+button,
+input {
   outline: none;
   border: none;
+  font-family: 'Montserrat', sans-serif;
+  color: #2d2d2d;
 }
 
 body {
   margin: 0;
   padding: 20px;
+  color: #262121eb;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

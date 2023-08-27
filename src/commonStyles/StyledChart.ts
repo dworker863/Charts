@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledChart = styled.div`
   width: 500px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   padding: 20px 40px;
   border-radius: 10px;
   color: #fff;
