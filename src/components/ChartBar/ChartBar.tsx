@@ -30,7 +30,7 @@ const ChartBar: FC<TChartBarProps> = ({ cash, cashFormat }) => {
       ? cash?.result.map((item: any, i: number) => `Неделя ${i + 1}`)
       : cashFormat === 'days'
       ? [...days, ...days].splice(moment(cash?.start).days(), cash.count)
-      : hours;
+      : [...hours, ...hours].splice(0, cash.count);
 
   ChartJS.register(CategoryScale, LinearScale, BarElement);
 
