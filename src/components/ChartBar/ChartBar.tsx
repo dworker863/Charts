@@ -11,35 +11,45 @@ import {
   BarElement,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
+import { TChartBarProps } from './TChartBar';
+import { weeks } from '../../utils/constants';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement);
+const ChartBar: FC<TChartBarProps> = ({ cash }) => {
+  const sum = new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    useGrouping: true,
+  }).format(cash?.resume.sum);
 
-export const options = {
-  responsive: true,
-  animation: {
-    duration: 2000,
-  },
-};
+  ChartJS.register(CategoryScale, LinearScale, BarElement);
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: '#2779FF',
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: Math.max(...cash?.result.map((item: any) => item.sum)),
+      },
     },
-  ],
-};
+    responsive: true,
+    animation: {
+      duration: 2000,
+    },
+  };
 
-const ChartBar: FC = () => {
+  const data = {
+    labels: weeks,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: cash?.result.map((item: any) => item.sum),
+        backgroundColor: '#2779FF',
+      },
+    ],
+  };
+
   return (
     <StyledChart>
-      <StyledTitle>Cash</StyledTitle>
-      <StyledTotalSum>20,000,0</StyledTotalSum>
+      <StyledTitle>Выручка</StyledTitle>
+      <StyledTotalSum>{sum}</StyledTotalSum>
       <Bar options={options} data={data} />
     </StyledChart>
   );

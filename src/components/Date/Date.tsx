@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import { StyledField } from '../../commonStyles/StyledField';
 import MaskedInput from 'react-text-mask';
 import { StyledErrorMessage } from '../../commonStyles/StyledErrorMessage';
+import { fetchCash } from '../../api/api';
+import moment from 'moment';
 
 const DateComponent: FC = () => {
   const mask = [
@@ -34,10 +36,14 @@ const DateComponent: FC = () => {
             .max(new Date(), 'Нельзя указывать будущую дату'),
         })}
         onSubmit={async (
-          values: { date: Date },
-          { setSubmitting }: FormikHelpers<{ date: Date }>,
+          values: { date: any },
+          { setSubmitting }: FormikHelpers<{ date: any }>,
         ): Promise<any> => {
-          console.log(values);
+          const date: any = moment(values.date, 'DD.MM.YYYY').toDate();
+
+          if (moment().diff(date, 'months') < 2) {
+            fetchCash(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'), 'W-MON');
+          }
 
           setSubmitting(false);
         }}
@@ -49,7 +55,12 @@ const DateComponent: FC = () => {
               id="date"
               type="text"
               name="date"
-              placeholder={new Date()}
+              placeholder={new Date()
+                .toISOString()
+                .split('T')[0]
+                .split('-')
+                .reverse()
+                .join('.')}
               as={MaskedInput}
               mask={mask}
               guide={false}
