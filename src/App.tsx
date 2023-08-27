@@ -1,10 +1,11 @@
 import { ThemeProvider } from 'styled-components';
 import { defaultTheme } from './commonStyles/theme';
+import ChartBar from './components/ChartBar';
 
 function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <div className="App">sdfsdf</div>;
+      <ChartBar />
     </ThemeProvider>
   );
 }
