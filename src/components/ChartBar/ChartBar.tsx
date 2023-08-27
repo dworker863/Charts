@@ -20,13 +20,29 @@ const ChartBar: FC<TChartBarProps> = ({ cash }) => {
     useGrouping: true,
   }).format(cash?.resume.sum);
 
+  const max = cash && Math.max(...cash?.result.map((item: any) => item.sum));
+
   ChartJS.register(CategoryScale, LinearScale, BarElement);
 
   const options = {
     scales: {
       y: {
         beginAtZero: true,
-        max: Math.max(...cash?.result.map((item: any) => item.sum)),
+        max,
+        ticks: {
+          color: '#fff',
+          font: {
+            family: 'Montserrat', // Здесь задаем шрифт для меток оси Y
+          },
+        },
+      },
+      x: {
+        ticks: {
+          color: '#fff',
+          font: {
+            family: 'Montserrat', // Здесь задаем шрифт для меток оси Y
+          },
+        },
       },
     },
     responsive: true,

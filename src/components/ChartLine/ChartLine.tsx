@@ -20,6 +20,9 @@ const ChartLine: FC<TChartLineProps> = ({ cash }) => {
     style: 'decimal',
     useGrouping: true,
   }).format(cash?.resume.sum);
+  console.log(cash);
+
+  const max = cash && Math.max(...cash?.result.map((item: any) => item.sum));
 
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -27,7 +30,21 @@ const ChartLine: FC<TChartLineProps> = ({ cash }) => {
     scales: {
       y: {
         beginAtZero: true,
-        max: Math.max(...cash?.result.map((item: any) => item.sum)),
+        max,
+        ticks: {
+          color: '#fff',
+          font: {
+            family: 'Montserrat', // Здесь задаем шрифт для меток оси Y
+          },
+        },
+      },
+      x: {
+        ticks: {
+          color: '#fff',
+          font: {
+            family: 'Montserrat', // Здесь задаем шрифт для меток оси Y
+          },
+        },
       },
     },
     responsive: true,
@@ -54,7 +71,7 @@ const ChartLine: FC<TChartLineProps> = ({ cash }) => {
   return (
     <StyledChart>
       <StyledTitle>Выручка</StyledTitle>
-      <StyledTotalSum>20,000,0</StyledTotalSum>
+      <StyledTotalSum>{sum}</StyledTotalSum>
       <Line options={options} data={data} />
     </StyledChart>
   );
