@@ -13,6 +13,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { TChartBarProps } from './TChartBar';
 import { days, hours, months } from '../../utils/constants';
+import moment from 'moment';
 
 const ChartBar: FC<TChartBarProps> = ({ cash, cashFormat }) => {
   const sum = new Intl.NumberFormat('en-US', {
@@ -20,16 +21,15 @@ const ChartBar: FC<TChartBarProps> = ({ cash, cashFormat }) => {
     useGrouping: true,
   }).format(cash?.resume.sum);
   console.log(cash);
-  console.log(cashFormat);
 
   const max = cash && Math.max(...cash?.result.map((item: any) => item.sum));
   const labels =
     cashFormat === 'months'
-      ? months
+      ? [...months, ...months].splice(moment(cash?.start).month(), cash.count)
       : cashFormat === 'weeks'
       ? cash?.result.map((item: any, i: number) => `Неделя ${i + 1}`)
       : cashFormat === 'days'
-      ? [...days, ...days].slice(0, cash.count)
+      ? [...days, ...days].splice(moment(cash?.start).days(), cash.count)
       : hours;
 
   ChartJS.register(CategoryScale, LinearScale, BarElement);

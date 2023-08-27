@@ -67,7 +67,10 @@ const DateComponent: FC<TDateProps> = ({ setCash, setCashFormat }) => {
             );
             setCash(cash);
             setCashFormat('weeks');
-          } else if (moment().diff(date, 'weeks') <= 2) {
+          } else if (
+            moment().diff(date, 'weeks') <= 2 &&
+            moment().diff(date, 'days') > 2
+          ) {
             console.log(3);
             const cash = await fetchCash(
               moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
