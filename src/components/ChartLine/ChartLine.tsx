@@ -13,16 +13,25 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { TChartLineProps } from './TChartLine';
-import { weeks } from '../../utils/constants';
+import { days, hours, months } from '../../utils/constants';
 
-const ChartLine: FC<TChartLineProps> = ({ cash }) => {
+const ChartLine: FC<TChartLineProps> = ({ cash, cashFormat }) => {
   const sum = new Intl.NumberFormat('en-US', {
     style: 'decimal',
     useGrouping: true,
   }).format(cash?.resume.sum);
   console.log(cash);
+  console.log(cashFormat);
 
   const max = cash && Math.max(...cash?.result.map((item: any) => item.sum));
+  const labels =
+    cashFormat === 'months'
+      ? months
+      : cashFormat === 'weeks'
+      ? cash?.result.map((item: any, i: number) => `Неделя ${i + 1}`)
+      : cashFormat === 'days'
+      ? [...days, ...days].slice(0, cash.count)
+      : hours;
 
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -54,7 +63,7 @@ const ChartLine: FC<TChartLineProps> = ({ cash }) => {
   };
 
   const data = {
-    labels: weeks,
+    labels,
     datasets: [
       {
         label: 'Dataset 1',

@@ -10,6 +10,7 @@ import Button from './components/Button/Button';
 
 function App() {
   const [cash, setCash] = useState<any>(null);
+  const [cashFormat, setCashFormat] = useState<string>('weeks');
   const [chartType, setChartType] = useState<'line' | 'bar'>('bar');
   console.log(chartType);
 
@@ -32,7 +33,7 @@ function App() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Date />
+      <Date setCash={setCash} setCashFormat={setCashFormat} />
       <Button
         type="button"
         text="Линейный график"
@@ -44,9 +45,9 @@ function App() {
         clickHandler={setBarChartTypeHandler}
       />
       {chartType === 'line' ? (
-        <ChartLine cash={cash} />
+        <ChartLine cash={cash} cashFormat={cashFormat} />
       ) : (
-        <ChartBar cash={cash} />
+        <ChartBar cash={cash} cashFormat={cashFormat} />
       )}
     </ThemeProvider>
   );

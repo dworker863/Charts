@@ -9,8 +9,9 @@ import MaskedInput from 'react-text-mask';
 import { StyledErrorMessage } from '../../commonStyles/StyledErrorMessage';
 import { fetchCash } from '../../api/api';
 import moment from 'moment';
+import { TDateProps } from './TDate';
 
-const DateComponent: FC = () => {
+const DateComponent: FC<TDateProps> = ({ setCash, setCashFormat }) => {
   const mask = [
     /[0-2]/,
     /[0-9]/,
@@ -33,7 +34,13 @@ const DateComponent: FC = () => {
         validationSchema={Yup.object({
           date: Yup.date()
             .required('Укажите дату')
-            .max(new Date(), 'Нельзя указывать будущую дату'),
+            .max(new Date(), 'Нельзя указывать будущую дату')
+            .transform((value, originalValue) => {
+              return new Date(
+                moment(originalValue, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+              );
+            })
+            .typeError('Неверный формат даты'),
         })}
         onSubmit={async (
           values: { date: any },
@@ -41,8 +48,41 @@ const DateComponent: FC = () => {
         ): Promise<any> => {
           const date: any = moment(values.date, 'DD.MM.YYYY').toDate();
 
-          if (moment().diff(date, 'months') < 2) {
-            fetchCash(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'), 'W-MON');
+          if (moment().diff(date, 'months') > 3) {
+            console.log(1);
+            const cash = await fetchCash(
+              moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+              'MS',
+            );
+            setCash(cash);
+            setCashFormat('months');
+          } else if (
+            moment().diff(date, 'months') <= 3 &&
+            moment().diff(date, 'weeks') >= 2
+          ) {
+            console.log(2);
+            const cash = await fetchCash(
+              moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+              'W-MON',
+            );
+            setCash(cash);
+            setCashFormat('weeks');
+          } else if (moment().diff(date, 'weeks') <= 2) {
+            console.log(3);
+            const cash = await fetchCash(
+              moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+              'D',
+            );
+            setCash(cash);
+            setCashFormat('days');
+          } else {
+            console.log(4);
+            const cash = await fetchCash(
+              moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+              'H',
+            );
+            setCash(cash);
+            setCashFormat('hours');
           }
 
           setSubmitting(false);
@@ -55,12 +95,7 @@ const DateComponent: FC = () => {
               id="date"
               type="text"
               name="date"
-              placeholder={new Date()
-                .toISOString()
-                .split('T')[0]
-                .split('-')
-                .reverse()
-                .join('.')}
+              placeholder={moment().format('DD.MM.YYYY')}
               as={MaskedInput}
               mask={mask}
               guide={false}
