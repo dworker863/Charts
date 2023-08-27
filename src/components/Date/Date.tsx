@@ -66,7 +66,7 @@ const DateComponent: FC = () => {
               guide={false}
               onChange={handleChange}
             />
-            <Button type="submit" />
+            <Button type="submit" text="Отправить" />
             <ErrorMessage name="date">
               {(msg: string) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
             </ErrorMessage>
